@@ -29,6 +29,9 @@ var comments = [
 http.createServer(function (request, response) {
     var parseObj = url.parse(request.url,true)
     var pathname = parseObj.pathname
+
+    response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+
     if (pathname == '/') {
         fs.readFile('./view/index.html',function (err,data) {
             if (err) {
@@ -61,6 +64,13 @@ http.createServer(function (request, response) {
         response.statusCode = 302
         response.setHeader('Location','/')
         response.end()
+    } else if (pathname == '/gantt') {
+        fs.readFile('./view/gantt.html',function (err,data) {
+            if (err) {
+                return response.end('404 not found.')
+            }
+            response.end(data)
+        })
     } else {
         fs.readFile('./view/404.html',function (err,data) {
             response.end(data)
